@@ -2,12 +2,15 @@ use sfml::window::{ContextSettings, Style};
 use sfml::graphics::{Color, RenderWindow, RenderTarget};
 use sfml::window::Event;
 
-pub struct Engine {
+use crate::entities::ball;
+
+pub struct Engine<'a> {
     window: RenderWindow,
+    ball: ball::Ball<'a>
 }
 
-impl Engine {
-    pub fn new(width: u32, height: u32) -> Engine {
+impl Engine<'_> {
+    pub fn new(width: u32, height: u32) -> Engine<'static> {
         let mut window = RenderWindow::new(
             (width, height),
             "Window",
@@ -15,7 +18,11 @@ impl Engine {
             &ContextSettings::default(),
         );
         window.set_framerate_limit(60);
-        Engine {window}
+        let mut ball = ball::Ball::new(10_f32);
+        Engine {
+            window,
+            ball
+        }
     }
 
     pub fn running(&mut self) -> bool {
@@ -37,6 +44,7 @@ impl Engine {
 
     pub fn render(&mut self) {
         self.window.clear(Color::BLACK);
+        self.ball.render(&mut self.window);
         self.window.display();
     }
 }

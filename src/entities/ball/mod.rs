@@ -6,7 +6,6 @@ use sfml::system::*;
 pub struct Ball<'a>{
     pub property: CircleShape<'a>,
     radius: f32,
-    position: Vector2f,
     velocity: Vector2f,
     acceleration: Vector2f
 }
@@ -16,11 +15,11 @@ impl Ball<'_>{
         let mut property = CircleShape::new(radius, 30_usize);
         property.set_fill_color(Color::WHITE);
         property.set_origin((radius, radius));
+        property.set_position(Vector2f::new(800_f32/2_f32, 600_f32/2_f32));
 
         Ball {
             property,
             radius,
-            position: Vector2f::new(0_f32, 0_f32),
             velocity: Vector2f::new(0_f32, 0_f32),
             acceleration: Vector2f::new(0_f32, 0_f32)
         }
