@@ -15,7 +15,7 @@ impl Engine {
             &ContextSettings::default(),
         );
         window.set_framerate_limit(60);
-        Engine { window }
+        Engine {window}
     }
 
     pub fn running(&mut self) -> bool {
