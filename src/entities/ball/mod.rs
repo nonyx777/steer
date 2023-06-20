@@ -27,7 +27,7 @@ impl Ball<'_>{
 
     //updater and displayer
     pub fn update(&mut self){
-        //...
+        
     }
     pub fn render(&mut self, target: &mut dyn RenderTarget){
         target.draw(&self.property);
@@ -37,11 +37,17 @@ impl Ball<'_>{
     pub fn getRadius(&mut self) -> f32{
         return self.radius;
     }
+    pub fn getPosition(&mut self) -> Vector2f{
+        return self.property.position();
+    }
     pub fn getVelocity(&mut self) -> Vector2f{
         return self.velocity;
     }
     pub fn getAcceleration(&mut self) -> Vector2f{
         return self.acceleration;
+    }
+    pub fn setPosition(&mut self, position: Vector2f){
+        self.property.set_position(position);
     }
     pub fn setVelocity(&mut self, velocity: Vector2f){
         self.velocity = velocity;
