@@ -1,12 +1,15 @@
 use sfml::window::{ContextSettings, Style};
 use sfml::graphics::{Color, RenderWindow, RenderTarget};
-use sfml::window::Event;
+use sfml::system::{Vector2f, Vector2i};
+use sfml::window::{Event, mouse};
 
 use crate::entities::ball;
 
 pub struct Engine<'a> {
     window: RenderWindow,
-    ball: ball::Ball<'a>
+    ball: ball::Ball<'a>,
+    mouse_position: Vector2i,
+    mouse_position_view: Vector2f
 }
 
 impl Engine<'_> {
@@ -19,9 +22,13 @@ impl Engine<'_> {
         );
         window.set_framerate_limit(60);
         let mut ball = ball::Ball::new(10_f32);
+        let mouse_position: Vector2i = Vector2i::new(0_i32, 0_i32);
+        let mouse_position_view: Vector2f = Vector2f::new(0_f32, 0_f32);
         Engine {
             window,
-            ball
+            ball,
+            mouse_position,
+            mouse_position_view
         }
     }
 
@@ -40,6 +47,12 @@ impl Engine<'_> {
 
     pub fn update(&mut self) {
         self.poll_event();
+
+        //mouse related
+        self.mouse_position = mouse::desktop_position();
+        self.mouse_position_view = self.window.map_pixel_to_coords(self.mouse_position, &mut self.window.view());
+
+        println!("{}, {}", self.mouse_position_view.x, self.mouse_position_view.y);
     }
 
     pub fn render(&mut self) {
