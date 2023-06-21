@@ -4,6 +4,7 @@ use sfml::system::{Vector2f, Vector2i};
 use sfml::window::{Event, mouse};
 
 use crate::entities::ball;
+use crate::operations;
 
 pub struct Engine<'a> {
     window: RenderWindow,
@@ -22,6 +23,7 @@ impl Engine<'_> {
         window.set_framerate_limit(60);
         let mut ball = ball::Ball::new(10_f32);
         let mouse_position_view: Vector2f = Vector2f::default();
+
         Engine {
             window,
             ball,
@@ -44,10 +46,10 @@ impl Engine<'_> {
 
     pub fn update(&mut self) {
         self.poll_event();
-        self.mouse_position_view = self.window.map_pixel_to_coords(mouse::desktop_position(), &mut self.window.view());
-        self.mouse_position_view = Vector2f::new(self.mouse_position_view.x - 95_f32, self.mouse_position_view.y - 100_f32);
 
-        self.ball.property.set_position(self.mouse_position_view);
+        self.mouse_position_view = self.window.map_pixel_to_coords(self.window.mouse_position(), self.window.view());
+
+        self.ball.update(&self.mouse_position_view);
     }
 
     pub fn render(&mut self) {
