@@ -2,12 +2,17 @@
 
 use sfml::graphics::*;
 use sfml::system::*;
+use sfml::window::{Key};
+
+use crate::operations;
 
 pub struct Ball<'a>{
     pub property: CircleShape<'a>,
     radius: f32,
     velocity: Vector2f,
-    acceleration: Vector2f
+    acceleration: Vector2f,
+    max_speed: f32,
+    max_force: f32
 }
 
 impl Ball<'_>{
@@ -17,17 +22,27 @@ impl Ball<'_>{
         property.set_origin((radius, radius));
         property.set_position(Vector2f::new(800_f32/2_f32, 600_f32/2_f32));
 
+        let max_speed: f32 = 10_f32;
+        let max_force: f32 = 0.03;
+
         Ball {
             property,
             radius,
             velocity: Vector2f::new(0_f32, 0_f32),
-            acceleration: Vector2f::new(0_f32, 0_f32)
+            acceleration: Vector2f::new(0_f32, 0_f32),
+            max_speed,
+            max_force
         }
     }
 
     //updater and displayer
     pub fn update(&mut self, vector: &Vector2f){
-        self.seek(vector);
+        if Key::Q.is_pressed(){
+            self.seek(vector);
+        }
+
+        self.property.move_(Vector2f::default());
+        self.setAcceleration(Vector2f::default());
     }
     pub fn render(&mut self, target: &mut dyn RenderTarget){
         target.draw(&self.property);
@@ -35,7 +50,17 @@ impl Ball<'_>{
 
     //custom function
     pub fn seek(&mut self, vector: &Vector2f){
-        self.property.move_((*vector - self.property.position()) * 0.1);
+        let mut desired: Vector2f = *vector - self.getPosition();
+        desired = operations::normalize(desired);
+        desired *= self.max_speed;
+        let steer: Vector2f = desired - self.getVelocity();
+
+        //integration
+        self.setAcceleration(steer * self.max_force);
+        self.setVelocity(self.getVelocity() + self.getAcceleration());
+        self.property.move_(self.getVelocity() * 0.5);
+
+        self.setAcceleration(Vector2f::default());
     }
 
     //accessors and mutators
