@@ -14,5 +14,5 @@ pub fn ballPenetrationResolution(ball_a: &mut ball::Ball, ball_b: &mut ball::Bal
     let normal: Vector2f = operations::displacement(ball_b.property.position(), ball_a.property.position());
     let distance: f32 = operations::magnitude(normal);
     let penetration_depth: f32 = (ball_a.getRadius() + ball_b.getRadius()) - distance;
-    let penetration_depth_vector: Vector2f = operations::unitVector(normal) * penetration_depth;
+    let penetration_depth_vector: Vector2f = operations::normalize(normal) * penetration_depth;
 }

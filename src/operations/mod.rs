@@ -29,7 +29,7 @@ pub fn magnitude(vector: Vector2f) -> f32{
 pub fn displacement(target_position: Vector2f, self_position: Vector2f) -> Vector2f{
     return target_position - self_position;
 }
-pub fn unitVector(vector: Vector2f) -> Vector2f{
+pub fn normalize(vector: Vector2f) -> Vector2f{
     let magnitude: f32 = magnitude(vector);
     return vector / magnitude;
 }
