@@ -39,16 +39,16 @@ impl Ball<'_>{
     }
 
     //accessors and mutators
-    pub fn getRadius(&mut self) -> f32{
+    pub fn getRadius(&self) -> f32{
         return self.radius;
     }
     pub fn getPosition(&self) -> Vector2f{
         return self.property.position();
     }
-    pub fn getVelocity(&mut self) -> Vector2f{
+    pub fn getVelocity(&self) -> Vector2f{
         return self.velocity;
     }
-    pub fn getAcceleration(&mut self) -> Vector2f{
+    pub fn getAcceleration(&self) -> Vector2f{
         return self.acceleration;
     }
     pub fn setPosition(&mut self, position: Vector2f){
