@@ -1,5 +1,7 @@
 #[allow(non_snake_case)]
 
+use std::time;
+use rand::Rng;
 use sfml::graphics::*;
 use sfml::system::*;
 use sfml::window::{Key};
@@ -12,7 +14,8 @@ pub struct Ball<'a>{
     velocity: Vector2f,
     acceleration: Vector2f,
     max_speed: f32,
-    max_force: f32
+    max_force: f32,
+    wonder_point: Vector2f
 }
 
 impl Ball<'_>{
@@ -24,14 +27,16 @@ impl Ball<'_>{
 
         let max_speed: f32 = 10_f32;
         let max_force: f32 = 0.03;
+        let wonder_point: Vector2f = Vector2f::default();
 
         Ball {
             property,
             radius,
-            velocity: Vector2f::new(0_f32, 0_f32),
+            velocity: Vector2f::new(1_f32, 1_f32),
             acceleration: Vector2f::new(0_f32, 0_f32),
             max_speed,
-            max_force
+            max_force,
+            wonder_point
         }
     }
 
@@ -41,8 +46,14 @@ impl Ball<'_>{
             self.seek(vector);
         }
 
-        self.property.move_(Vector2f::default());
-        self.setAcceleration(Vector2f::default());
+        else{
+            if operations::magnitude(operations::displacement(self.wonder_point, self.getPosition())) <= 30_f32{
+                self.wonder();
+            }else{
+                let _vec = self.wonder_point;
+                self.seek(&_vec);
+            }
+        }
     }
     pub fn render(&mut self, target: &mut dyn RenderTarget){
         target.draw(&self.property);
@@ -61,6 +72,14 @@ impl Ball<'_>{
         self.property.move_(self.getVelocity() * 0.5);
 
         self.setAcceleration(Vector2f::default());
+    }
+
+    pub fn wonder(&mut self){
+        let random_x: f32 = rand::thread_rng().gen_range(20.0..780.0);
+        let random_y: f32 = rand::thread_rng().gen_range(20.0..580.0);
+        let target_point = Vector2f::new(random_x, random_y);
+
+        self.wonder_point = target_point;
     }
 
     //accessors and mutators

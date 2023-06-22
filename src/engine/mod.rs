@@ -21,7 +21,7 @@ impl Engine<'_> {
             &ContextSettings::default(),
         );
         window.set_framerate_limit(60);
-        let mut ball = ball::Ball::new(10_f32);
+        let ball = ball::Ball::new(10_f32);
         let mouse_position_view: Vector2f = Vector2f::default();
 
         Engine {
