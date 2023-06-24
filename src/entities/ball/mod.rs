@@ -26,7 +26,7 @@ impl Ball<'_>{
         property.set_position(Vector2f::new(800_f32/2_f32, 600_f32/2_f32));
 
         let max_speed: f32 = 10_f32;
-        let max_force: f32 = 0.03;
+        let max_force: f32 = 0.02;
         let wonder_point: Vector2f = Vector2f::default();
 
         Ball {
